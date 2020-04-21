@@ -97,11 +97,18 @@ RESP_SYNC_OK = 0x33
 class Controller:
 
     def __init__(self, port: str, baudrate: int = 19200):
-        self.ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
+        self.ser = None
+        self.port = port
+        self.baudrate = baudrate
+        self.open()
+
+    def open(self):
+        self.ser = serial.Serial(port=self.port, baudrate=self.baudrate, timeout=1)
         self.force_sync()
 
-    def __del__(self):
+    def close(self):
         self.ser.close()
+        self.ser = None
 
     @staticmethod
     # Compute x and y based on angle and intensity
@@ -483,6 +490,6 @@ class Controller:
 
     def press_button(self, button):
         self.send_cmd(button)
-        self.p_wait(0.1)
+        self.p_wait(0.2)
         self.send_cmd()
-        self.p_wait(0.1)
+        self.p_wait(0.2)
