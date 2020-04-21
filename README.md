@@ -10,11 +10,16 @@ Automatically records what's in your Animal Crossing: New Horizons catalog
 * USB to UART adapter (another Arduino can be used by connecting RX -> TX and vice versa)
 
 ## Usage
-1. Follow the instructions [here](https://github.com/wchill/SwitchInputEmulator) to flash your ATMega16U2
-2. Set up a virtualenv: `python -m virtualenv venv`
-3. Install python dependencies: `pip install -r requirements.txt`
-4. Connect your Switch to your Cam Link 
-5. Open up Nook Shopping (stay on the screen that says `Welcome to Nook Shopping!`)
+1. Flash the provided Joystick.hex to your ATMega16U2 using DFU mode. 
+    * [Instructions for doing this for an Arduino Uno R3](https://www.arduino.cc/en/Hacking/DFUProgramming8U2)
+2. Set up a virtualenv and install dependencies
+    * `python -m virtualenv venv`
+    * `pip install -r requirements.txt`
+3. Connect your Switch to your Cam Link 
+4. Open up Nook Shopping (stay on the screen that says `Welcome to Nook Shopping!`)
+5. Press Home, then navigate to Controllers > Change Grip/Order
+    * It is very important that you do this, otherwise Animal Crossing will not recognize accept input from the fake
+    controller and the script will not work. In addition, the script assumes you are on this screen.
 6. Run the script: `python main.py <serial port>`
 
 ## How does it work?

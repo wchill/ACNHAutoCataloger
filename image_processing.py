@@ -7,15 +7,15 @@ from east import detect_text_in_box
 POINTER_IMG = cv2.imread('./pointer.png', cv2.IMREAD_COLOR)
 
 
-def get_item_name(image):
+def get_item_name(image, slot=None):
     item_slot_x = 952
     item_slot_y_start = 235
     item_slot_height = 80
     text_width = 640
     text_height = 70
 
-    slot = find_pointer(image)
-    print(slot)
+    if slot is None:
+        slot = find_pointer(image)
 
     y = item_slot_y_start + item_slot_height * slot
     box = (item_slot_x, y, item_slot_x + text_width, y + text_height)
@@ -75,11 +75,12 @@ def run_tesseract(image, box):
     return pytesseract.image_to_string(roi, config=config)
 
 
-def process_frame(image):
-    name = get_item_name(image)
-    has_variants = has_multiple_variants(image)
+def process_frame(image, only_get_variant=False):
+    if not only_get_variant:
+        name = get_item_name(image)
+        has_variants = has_multiple_variants(image)
+    else:
+        name = None
+        has_variants = True
     variant_name = get_variant(image)
-    print(name)
-    print('Multiple variants' if has_variants else 'One variant')
-    print(variant_name)
     return name, has_variants, variant_name
